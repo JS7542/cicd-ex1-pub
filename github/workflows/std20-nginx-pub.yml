@@ -1,0 +1,38 @@
+# 워크 플로우(작업) 이름
+name: GitOps CI Pipeline
+# 1. 트리거 설정 : 브랜치 정의
+on:
+  push:
+    branches:
+      - main
+
+# 2. 작업 정의
+jobs:
+  build-and-update:
+    runs-on: ubuntu-latest    # 실제 작업 주체
+
+    # # 작업 절차
+    # steps:
+    #   - name: <작업명 -- 아래를 다 쓰는건 아니고, 필요한 사항들만 쓰면 됨.>
+    #     uses: <작업 종류 - 라이브러리 버전>
+    #     with:   # Access key 등 
+    #       <입력 파라미터 키>: <입력 파라미터 값>
+    #     env:
+    #       <환경 변수 키>: <환경 변수 값>
+    #     run: |
+    #       <리눅스 명령어들>
+
+    steps:
+      - name : 소스 코드 전송
+        uses : actions/checkout@v3
+
+      - name : Public EC2 Instance 에 파일 전송
+        uses : appleboy/scp-action@master
+        with :
+          host : \${{secrets.EC2_HOST}}
+          username : \${{secrets.EC2_USER}}
+          key : \${{secrets.EC2_SSH_KEY}}
+          port : 22
+          source : "html/index.html"
+          target : "/var/www/html"
+          strip_components : 1
