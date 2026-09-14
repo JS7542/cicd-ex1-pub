@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name : 소스 코드 전송
-        uses : actions/checkout@v3
+        uses : actions/checkout@v4
 
       - name : Public EC2 Instance 에 파일 전송
         uses : appleboy/scp-action@master
